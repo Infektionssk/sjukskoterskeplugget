@@ -1,59 +1,89 @@
 <!doctype html>
 <html lang="sv">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sjuksköterskeplugget 2.0</title><link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f9f8f">
+  <title>Sjuksköterskeplugget – Quiz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <a href="#home" class="brand"><b>✚</b> Sjuksköterskeplugget</a>
-  <div class="headtools"><input id="search" placeholder="Sök på sidan…"><button id="theme">◐</button></div>
+<header class="topbar">
+  <a class="brand" href="#" data-nav="home"><span class="brand-icon">✚</span><span>Sjuksköterskeplugget</span></a>
+  <nav>
+    <button data-nav="quiz">Quiz</button>
+    <button data-nav="flashcards">Flashcards</button>
+    <button data-nav="vfu">VFU</button>
+    <button data-nav="progress">Framsteg</button>
+  </nav>
+  <div class="top-actions">
+    <input id="search" type="search" placeholder="Sök på sidan…" aria-label="Sök på sidan">
+    <button id="themeBtn" class="icon-btn" title="Byt tema">◐</button>
+  </div>
 </header>
-<div class="layout">
-<aside><nav>
-<a href="#home">⌂ Översikt</a><a href="#subjects">▦ Ämnen</a><a href="#quiz">✓ Quiz</a>
-<a href="#cards">▤ Flashcards</a><a href="#vfu">♧ VFU</a><a href="#progress">↗ Framsteg</a>
-</nav><div class="tip"><b>Plugga smartare</b><p>Träna lite varje dag och repetera det du hade svårt för.</p></div></aside>
+
 <main>
-<section id="home" class="page">
-<div class="hero"><div><small>STUDIEPLATTFORM FÖR SJUKSKÖTERSKESTUDENTER</small>
-<h1>Plugga smartare.<br><span>Väx som sjuksköterska.</span></h1>
-<p>Samla kunskap, träna inför tenta och bli tryggare inför VFU – på ett och samma ställe.</p>
-<button class="primary" data-go="#quiz">Starta ett quiz →</button>
-<button data-go="#subjects">Utforska ämnen</button></div>
-<div class="focus"><small>DITT FOKUS IDAG</small><h2>Farmakologi</h2><div class="bar"><i style="width:72%"></i></div><p>72 % behärskat</p><button data-go="#quiz">Träna nu →</button></div></div>
-<h2>Vad vill du plugga?</h2><div id="homeSubjects" class="grid"></div>
-<div class="daily"><small>DAGENS FRÅGA</small><h2>Vad är första steget vid en akut försämring?</h2>
-<button id="daily">Visa svar</button><p id="answer" class="hidden">ABCDE – börja med en strukturerad bedömning av Airway, Breathing, Circulation, Disability och Exposure.</p></div>
-</section>
+  <section id="home" class="page active">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">STUDIEPLATTFORM FÖR SJUKSKÖTERSKESTUDENTER</p>
+        <h1>Plugga smartare.<br><span>Jobba tryggare.</span></h1>
+        <p class="lead">Träna inför tenta och VFU med quiz, förklaringar, flashcards och praktiska moment – på ett och samma ställe.</p>
+        <div class="hero-actions">
+          <button class="primary" data-nav="quiz">Starta quiz <span>→</span></button>
+          <button class="secondary" data-nav="vfu">Träna VFU</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="ring">0%</div>
+        <strong>Ditt lärande</strong>
+        <span>Redo för nästa pass?</span>
+      </div>
+    </div>
 
-<section id="subjects" class="page"><small>KUNSKAPSBANK</small><h1>Ämnen</h1><p>Välj ett område och repetera centrala begrepp.</p>
-<div id="allSubjects" class="grid"></div><div id="detail" class="panel hidden"></div></section>
+    <div class="section-head"><div><p class="eyebrow">VÄLJ OMRÅDE</p><h2>Vad vill du plugga?</h2></div><span>Bygg upp din kunskap steg för steg</span></div>
+    <div id="subjectGrid" class="subject-grid"></div>
 
-<section id="quiz" class="page"><small>TRÄNA</small><h1>Quiz</h1><p>Välj kategori och få direkt återkoppling.</p>
-<div class="quiz-layout"><div class="panel"><div class="quiztop"><span id="cat"></span><span id="count"></span></div><div id="quizbody"></div></div>
-<div class="panel"><h3>Inställningar</h3><label>Kategori<select id="select">
-<option value="all">Blandat</option><option value="anatomy">Anatomi & fysiologi</option><option value="pharm">Farmakologi</option>
-<option value="omv">Omvårdnad</option><option value="infection">Infektion</option><option value="acute">Akutsjukvård</option></select></label>
-<button class="primary full" id="newquiz">Nytt quiz</button><hr>Senaste resultat<h2 id="last">–</h2></div></div></section>
+    <div class="quick-grid">
+      <button class="quick" data-nav="quiz"><b>🧠</b><span><strong>Dagens quiz</strong><small>10 frågor • blandat</small></span>→</button>
+      <button class="quick" data-nav="flashcards"><b>🃏</b><span><strong>Flashcards</strong><small>Repetera aktivt</small></span>→</button>
+      <button class="quick" data-nav="vfu"><b>🏥</b><span><strong>VFU-träning</strong><small>SBAR, ABCDE, PVK m.m.</small></span>→</button>
+    </div>
+  </section>
 
-<section id="cards" class="page"><small>AKTIV REPETITION</small><h1>Flashcards</h1><p>Klicka på kortet för att vända det.</p>
-<div class="cardrow"><button id="prev">←</button><div id="flash" class="flash">
-<div><small>FRÅGA</small><h2 id="fq"></h2><em>Klicka för att vända</em></div>
-<div class="back"><small>SVAR</small><p id="fa"></p><em>Klicka för att vända tillbaka</em></div></div><button id="next">→</button></div><p id="fcount" class="center"></p></section>
+  <section id="quiz" class="page">
+    <div class="page-title"><div><p class="eyebrow">AKTIV INLÄRNING</p><h2>Quiz</h2><p>Välj område och svårighetsgrad. Efter varje svar får du en kort förklaring.</p></div></div>
+    <div id="quizSetup" class="panel setup">
+      <div class="field"><label>Ämne</label><select id="quizSubject"></select></div>
+      <div class="field"><label>Svårighetsgrad</label><select id="quizDifficulty"><option value="Alla">Alla</option><option value="Grund">Grund</option><option value="Medel">Medel</option><option value="Avancerad">Avancerad</option></select></div>
+      <div class="field"><label>Antal frågor</label><select id="quizCount"><option>5</option><option selected>10</option><option>15</option></select></div>
+      <button id="startQuiz" class="primary">Starta quiz →</button>
+    </div>
+    <div id="quizArea" class="hidden"></div>
+  </section>
 
-<section id="vfu" class="page"><small>VFU-HUB</small><h1>Bli tryggare i kliniken</h1><p>Snabbträning inför vanliga situationer under VFU.</p>
-<div class="grid vfu">
-<article data-vfu="ABCDE">🫁<h3>ABCDE</h3><p>Strukturerad bedömning av akut sjuk patient.</p></article>
-<article data-vfu="NEWS2">📊<h3>NEWS2</h3><p>Öva tolkning av vitalparametrar.</p></article>
-<article data-vfu="SBAR">💬<h3>SBAR</h3><p>Strukturerad kommunikation.</p></article>
-<article data-vfu="PVK">💉<h3>PVK</h3><p>Förberedelser och aseptik.</p></article>
-<article data-vfu="Läkemedel">💊<h3>Läkemedel</h3><p>Säker läkemedelshantering.</p></article>
-<article data-vfu="Patientfall">🩺<h3>Patientfall</h3><p>Ta kliniska beslut steg för steg.</p></article></div>
-<div id="vfudetail" class="panel hidden"></div></section>
+  <section id="flashcards" class="page">
+    <div class="page-title"><div><p class="eyebrow">REPETITION</p><h2>Flashcards</h2><p>Klicka på kortet för att vända det.</p></div></div>
+    <div class="flash-toolbar"><select id="flashSubject"></select><button id="shuffleFlash" class="secondary">Blanda</button></div>
+    <div id="flashcard" class="flashcard"><div class="front"><span class="card-tag">FRÅGA</span><h3 id="flashFront"></h3><small>Klicka för att vända</small></div><div class="back"><span class="card-tag">SVAR</span><p id="flashBack"></p></div></div>
+    <div class="flash-controls"><button id="prevFlash" class="secondary">← Föregående</button><span id="flashCounter"></span><button id="nextFlash" class="primary">Nästa →</button></div>
+  </section>
 
-<section id="progress" class="page"><small>DIN UTVECKLING</small><h1>Framsteg</h1><p>Resultaten sparas lokalt i din webbläsare.</p>
-<div class="stats"><div><small>Quiz genomförda</small><b id="done">0</b></div><div><small>Frågor besvarade</small><b id="answered">0</b></div><div><small>Rätt totalt</small><b id="accuracy">0 %</b></div></div>
-<div class="panel"><h2>Ämnesöversikt</h2><div id="bars"></div></div></section>
-</main></div><footer>© 2026 Sjuksköterskeplugget · Studieverktyg för utbildning</footer>
-<script src="script.js"></script></body></html>
+  <section id="vfu" class="page">
+    <div class="page-title"><div><p class="eyebrow">PRAKTISK TRÄNING</p><h2>VFU</h2><p>Snabba repetitionskort inför kliniken.</p></div></div>
+    <div id="vfuGrid" class="vfu-grid"></div>
+    <div id="vfuDetail" class="panel hidden"></div>
+  </section>
+
+  <section id="progress" class="page">
+    <div class="page-title"><div><p class="eyebrow">DIN UTVECKLING</p><h2>Framsteg</h2><p>Statistiken sparas lokalt i din webbläsare.</p></div></div>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="panel"><h3>Ämnesöversikt</h3><div id="progressSubjects"></div></div>
+    <button id="resetProgress" class="danger">Nollställ framsteg</button>
+  </section>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
