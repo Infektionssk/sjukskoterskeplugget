@@ -1,89 +1,120 @@
 <!doctype html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f9f8f">
-  <title>Sjuksköterskeplugget – Quiz</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f9f8f">
+<title>Sjuksköterskeplugget – Studieplattform</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="#" data-nav="home"><span class="brand-icon">✚</span><span>Sjuksköterskeplugget</span></a>
-  <nav>
+  <a class="brand" href="#home" data-nav="home"><span class="brand-icon">✚</span><span>Sjuksköterskeplugget</span></a>
+  <nav aria-label="Huvudmeny">
+    <button data-nav="home">Start</button>
     <button data-nav="quiz">Quiz</button>
     <button data-nav="flashcards">Flashcards</button>
     <button data-nav="vfu">VFU</button>
+    <button data-nav="knowledge">Kunskapsbank</button>
     <button data-nav="progress">Framsteg</button>
   </nav>
   <div class="top-actions">
-    <input id="search" type="search" placeholder="Sök på sidan…" aria-label="Sök på sidan">
-    <button id="themeBtn" class="icon-btn" title="Byt tema">◐</button>
+    <input id="search" type="search" placeholder="Sök..." aria-label="Sök">
+    <button id="themeBtn" class="icon-btn" aria-label="Byt tema">◐</button>
   </div>
 </header>
 
 <main>
-  <section id="home" class="page active">
-    <div class="hero">
-      <div>
-        <p class="eyebrow">STUDIEPLATTFORM FÖR SJUKSKÖTERSKESTUDENTER</p>
-        <h1>Plugga smartare.<br><span>Jobba tryggare.</span></h1>
-        <p class="lead">Träna inför tenta och VFU med quiz, förklaringar, flashcards och praktiska moment – på ett och samma ställe.</p>
-        <div class="hero-actions">
-          <button class="primary" data-nav="quiz">Starta quiz <span>→</span></button>
-          <button class="secondary" data-nav="vfu">Träna VFU</button>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="ring">0%</div>
-        <strong>Ditt lärande</strong>
-        <span>Redo för nästa pass?</span>
+<section id="home" class="page active">
+  <div class="hero">
+    <div>
+      <p class="eyebrow">STUDIEPLATTFORM FÖR SJUKSKÖTERSKESTUDENTER</p>
+      <h1>Plugga smartare.<br><span>Jobba tryggare.</span></h1>
+      <p class="lead">Ett ställe för tentaträning, kliniskt tänkande, VFU och aktiv repetition.</p>
+      <div class="hero-actions">
+        <button class="primary" data-action="daily">Dagens quiz →</button>
+        <button class="secondary" data-nav="vfu">Träna VFU</button>
       </div>
     </div>
-
-    <div class="section-head"><div><p class="eyebrow">VÄLJ OMRÅDE</p><h2>Vad vill du plugga?</h2></div><span>Bygg upp din kunskap steg för steg</span></div>
-    <div id="subjectGrid" class="subject-grid"></div>
-
-    <div class="quick-grid">
-      <button class="quick" data-nav="quiz"><b>🧠</b><span><strong>Dagens quiz</strong><small>10 frågor • blandat</small></span>→</button>
-      <button class="quick" data-nav="flashcards"><b>🃏</b><span><strong>Flashcards</strong><small>Repetera aktivt</small></span>→</button>
-      <button class="quick" data-nav="vfu"><b>🏥</b><span><strong>VFU-träning</strong><small>SBAR, ABCDE, PVK m.m.</small></span>→</button>
+    <div class="hero-card">
+      <div class="ring" id="homeAccuracy">0%</div>
+      <strong id="homeAnswered">0 besvarade</strong>
+      <span id="homeTip">Redo för nästa pass?</span>
     </div>
-  </section>
+  </div>
 
-  <section id="quiz" class="page">
-    <div class="page-title"><div><p class="eyebrow">AKTIV INLÄRNING</p><h2>Quiz</h2><p>Välj område och svårighetsgrad. Efter varje svar får du en kort förklaring.</p></div></div>
-    <div id="quizSetup" class="panel setup">
-      <div class="field"><label>Ämne</label><select id="quizSubject"></select></div>
-      <div class="field"><label>Svårighetsgrad</label><select id="quizDifficulty"><option value="Alla">Alla</option><option value="Grund">Grund</option><option value="Medel">Medel</option><option value="Avancerad">Avancerad</option></select></div>
-      <div class="field"><label>Antal frågor</label><select id="quizCount"><option>5</option><option selected>10</option><option>15</option></select></div>
-      <button id="startQuiz" class="primary">Starta quiz →</button>
-    </div>
-    <div id="quizArea" class="hidden"></div>
-  </section>
+  <div class="section-head">
+    <div><p class="eyebrow">ÖVERSIKT</p><h2>Vad vill du träna?</h2></div>
+    <span>Välj ett område för att komma igång</span>
+  </div>
+  <div id="subjectGrid" class="subject-grid"></div>
 
-  <section id="flashcards" class="page">
-    <div class="page-title"><div><p class="eyebrow">REPETITION</p><h2>Flashcards</h2><p>Klicka på kortet för att vända det.</p></div></div>
-    <div class="flash-toolbar"><select id="flashSubject"></select><button id="shuffleFlash" class="secondary">Blanda</button></div>
-    <div id="flashcard" class="flashcard"><div class="front"><span class="card-tag">FRÅGA</span><h3 id="flashFront"></h3><small>Klicka för att vända</small></div><div class="back"><span class="card-tag">SVAR</span><p id="flashBack"></p></div></div>
-    <div class="flash-controls"><button id="prevFlash" class="secondary">← Föregående</button><span id="flashCounter"></span><button id="nextFlash" class="primary">Nästa →</button></div>
-  </section>
+  <div class="quick-grid">
+    <button class="quick" data-action="daily"><b>🧠</b><span><strong>Dagens quiz</strong><small>10 blandade frågor</small></span>→</button>
+    <button class="quick" data-nav="flashcards"><b>🃏</b><span><strong>Flashcards</strong><small>Aktiv repetition</small></span>→</button>
+    <button class="quick" data-nav="vfu"><b>🏥</b><span><strong>VFU-träning</strong><small>SBAR, ABCDE, PVK m.m.</small></span>→</button>
+    <button class="quick" data-nav="knowledge"><b>📚</b><span><strong>Kunskapsbank</strong><small>Snabba sammanfattningar</small></span>→</button>
+  </div>
 
-  <section id="vfu" class="page">
-    <div class="page-title"><div><p class="eyebrow">PRAKTISK TRÄNING</p><h2>VFU</h2><p>Snabba repetitionskort inför kliniken.</p></div></div>
-    <div id="vfuGrid" class="vfu-grid"></div>
-    <div id="vfuDetail" class="panel hidden"></div>
-  </section>
+  <div class="panel study-plan">
+    <div><p class="eyebrow">REKOMMENDERAT</p><h3 id="recommendTitle">Börja med ett kort quiz</h3><p id="recommendText">Besvara några frågor så anpassar vi rekommendationen efter dina resultat.</p></div>
+    <button class="primary" data-action="recommended">Träna nu →</button>
+  </div>
+</section>
 
-  <section id="progress" class="page">
-    <div class="page-title"><div><p class="eyebrow">DIN UTVECKLING</p><h2>Framsteg</h2><p>Statistiken sparas lokalt i din webbläsare.</p></div></div>
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="panel"><h3>Ämnesöversikt</h3><div id="progressSubjects"></div></div>
-    <button id="resetProgress" class="danger">Nollställ framsteg</button>
-  </section>
+<section id="quiz" class="page">
+  <div class="page-title"><div><p class="eyebrow">AKTIV INLÄRNING</p><h2>Quiz</h2><p>Testa dig själv och få en tydlig förklaring efter varje svar.</p></div></div>
+  <div id="quizSetup" class="panel setup">
+    <div class="field"><label for="quizSubject">Ämne</label><select id="quizSubject"></select></div>
+    <div class="field"><label for="quizDifficulty">Svårighetsgrad</label><select id="quizDifficulty"><option value="Alla">Alla nivåer</option><option value="Grund">Grund</option><option value="Medel">Medel</option><option value="Avancerad">Avancerad</option></select></div>
+    <div class="field"><label for="quizCount">Antal frågor</label><select id="quizCount"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
+    <div class="field"><label for="quizMode">Läge</label><select id="quizMode"><option value="normal">Direkt feedback</option><option value="exam">Tentamode – feedback efter frågan</option></select></div>
+    <label class="check"><input id="quizTimer" type="checkbox"> Tidsgräns 60 sek/fråga</label>
+    <button id="startQuiz" class="primary">Starta quiz →</button>
+  </div>
+  <div id="quizArea" class="hidden"></div>
+</section>
+
+<section id="flashcards" class="page">
+  <div class="page-title"><div><p class="eyebrow">AKTIV REPETITION</p><h2>Flashcards</h2><p>Vänd kortet och markera om du kunde svaret.</p></div></div>
+  <div class="flash-toolbar">
+    <select id="flashSubject"></select>
+    <select id="flashFilter"><option value="all">Alla kort</option><option value="new">Nya</option><option value="weak">Behöver repetition</option></select>
+    <button id="shuffleFlash" class="secondary">Blanda</button>
+  </div>
+  <div id="flashcard" class="flashcard" tabindex="0">
+    <div class="front"><span class="card-tag">FRÅGA</span><h3 id="flashFront"></h3><small>Klicka eller tryck Enter för att vända</small></div>
+    <div class="back"><span class="card-tag">SVAR</span><p id="flashBack"></p></div>
+  </div>
+  <div class="flash-controls">
+    <button id="flashNo" class="secondary">↩ Behöver träna</button>
+    <span id="flashCounter"></span>
+    <button id="flashYes" class="primary">✓ Kunde</button>
+  </div>
+</section>
+
+<section id="vfu" class="page">
+  <div class="page-title"><div><p class="eyebrow">KLINISK TRÄNING</p><h2>VFU</h2><p>Träna på vanliga kliniska situationer och kommunikationsverktyg.</p></div></div>
+  <div id="vfuGrid" class="vfu-grid"></div>
+  <div id="vfuDetail" class="panel hidden"></div>
+</section>
+
+<section id="knowledge" class="page">
+  <div class="page-title"><div><p class="eyebrow">SNABB REPETITION</p><h2>Kunskapsbank</h2><p>Korta, strukturerade översikter att repetera före tenta eller VFU.</p></div></div>
+  <div class="knowledge-toolbar"><input id="knowledgeSearch" type="search" placeholder="Sök diagnos, läkemedel, begrepp..."></div>
+  <div id="knowledgeGrid" class="knowledge-grid"></div>
+</section>
+
+<section id="progress" class="page">
+  <div class="page-title"><div><p class="eyebrow">DIN UTVECKLING</p><h2>Framsteg</h2><p>All statistik sparas lokalt i din webbläsare.</p></div></div>
+  <div class="stats-grid" id="statsGrid"></div>
+  <div class="panel"><div class="panel-head"><h3>Ämnesöversikt</h3><span id="progressHint"></span></div><div id="progressSubjects"></div></div>
+  <div class="panel"><h3>Senaste quiz</h3><div id="historyList"></div></div>
+  <button id="resetProgress" class="danger">Nollställ framsteg</button>
+</section>
 </main>
 
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast" role="status"></div>
 <script src="script.js"></script>
 </body>
 </html>

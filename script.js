@@ -1,110 +1,226 @@
-const subjects=[
- {id:"anatomi",name:"Anatomi & fysiologi",icon:"🫀",desc:"Struktur och funktion"},
- {id:"farmakologi",name:"Farmakologi",icon:"💊",desc:"Läkemedel och biverkningar"},
- {id:"omvardnad",name:"Omvårdnad",icon:"❤️",desc:"Personcentrerad vård"},
- {id:"mikrobiologi",name:"Mikrobiologi",icon:"🦠",desc:"Infektioner och smitta"},
- {id:"akut",name:"Akut omhändertagande",icon:"🚑",desc:"ABCDE och akuta tillstånd"},
- {id:"medicin",name:"Medicinska sjukdomar",icon:"🩺",desc:"Vanliga diagnoser"},
- {id:"lakemedelsberakning",name:"Läkemedelsberäkning",icon:"🧮",desc:"Dos, styrka och infusion"},
- {id:"vfu",name:"VFU & kliniska moment",icon:"🏥",desc:"Praktiska färdigheter"}
-];
+const subjects=[('anatomi', 'Anatomi & fysiologi', '🫀', 'Kroppens struktur och funktion'), ('farmakologi', 'Farmakologi', '💊', 'Läkemedel, effekter och risker'), ('omvardnad', 'Omvårdnad', '❤️', 'Omvårdnadsprocess och personcentrering'), ('mikrobiologi', 'Mikrobiologi', '🦠', 'Infektion, smitta och resistens'), ('akut', 'Akut omhändertagande', '🚑', 'ABCDE, försämring och prioritering'), ('medicin', 'Medicinska sjukdomar', '🩺', 'Vanliga sjukdomar och symtom'), ('lakemedelsberakning', 'Läkemedelsberäkning', '🧮', 'Dos, styrka, infusion och enheter'), ('vfu', 'VFU & kliniska moment', '🏥', 'Praktiska färdigheter och patientsäkerhet')].map(([id,name,icon,desc])=>({id,name,icon,desc}));
+const questions=[('a1', 'anatomi', 'Grund', 'Vilket organ ansvarar främst för gasutbytet mellan luft och blod?', ['Hjärtat', 'Lungorna', 'Levern', 'Njurarna'], 1, 'Gasutbytet sker framför allt i lungornas alveoler genom diffusion av syre och koldioxid.', 'Respiration'), ('a2', 'anatomi', 'Grund', 'Vilken del av hjärtat pumpar blodet ut i systemkretsloppet?', ['Höger förmak', 'Höger kammare', 'Vänster förmak', 'Vänster kammare'], 3, 'Vänster kammare pumpar syrerikt blod via aorta till kroppens vävnader.', 'Hjärta'), ('a3', 'anatomi', 'Medel', 'Vilket hormon ökar återupptaget av vatten i njurarnas samlingsrör?', ['Insulin', 'ADH', 'TSH', 'Glukagon'], 1, 'ADH ökar vattenpermeabiliteten i samlingsrören och hjälper kroppen att behålla vatten.', 'Njure'), ('a4', 'anatomi', 'Medel', 'Vilken struktur i njuren är den huvudsakliga platsen för filtration av blodet?', ['Glomerulus', 'Urinledaren', 'Njurkapseln', 'Samlingsröret'], 0, 'Filtrationen sker över glomeruluskapillärerna till Bowmans kapsel och bildar primärurin.', 'Njure'), ('a5', 'anatomi', 'Medel', 'Vad är en viktig funktion hos erytrocyternas hemoglobin?', ['Koagulera blodet', 'Transportera syre', 'Bildar antikroppar', 'Reglera insulin'], 1, 'Hemoglobin binder framför allt syre i lungorna och transporterar det till vävnaderna.', 'Blod'), ('a6', 'anatomi', 'Avancerad', 'Vad händer normalt med hjärtats minutvolym om hjärtfrekvensen ökar måttligt medan slagvolymen är oförändrad?', ['Den minskar', 'Den ökar', 'Den blir alltid noll', 'Den påverkas inte alls'], 1, 'Minutvolym = hjärtfrekvens × slagvolym. Vid oförändrad slagvolym ökar minutvolymen när frekvensen ökar.', 'Cirkulation'), ('a7', 'anatomi', 'Grund', 'Vilken del av nervsystemet ansvarar främst för viljestyrda rörelser?', ['Somatiska nervsystemet', 'Parasympatiska nervsystemet', 'Sympatiska nervsystemet', 'Enteriska nervsystemet'], 0, 'Det somatiska nervsystemet styr framför allt viljemässiga rörelser i skelettmuskulaturen.', 'Nervsystem'), ('f1', 'farmakologi', 'Grund', 'Vilken effekt har en betablockerare typiskt på hjärtat?', ['Ökad hjärtfrekvens', 'Minskad hjärtfrekvens', 'Ökad kontraktilitet', 'Ökad salivproduktion'], 1, 'Betablockad kan minska hjärtfrekvens och kontraktilitet samt därmed hjärtats arbetsbelastning.', 'Kardiologi'), ('f2', 'farmakologi', 'Medel', 'Vilket läkemedel är ett DOAK?', ['Apixaban', 'Paracetamol', 'Omeprazol', 'Amoxicillin'], 0, 'Apixaban är en direkt faktor Xa-hämmare och tillhör gruppen direktverkande orala antikoagulantia.', 'Antikoagulantia'), ('f3', 'farmakologi', 'Grund', 'Vilken biverkning är särskilt vanlig vid opioidbehandling?', ['Förstoppning', 'Ökad hörsel', 'Ökad urinproduktion', 'Hyperaktivitet'], 0, 'Opioider kan orsaka bland annat förstoppning, illamående och sedering. Andningsdepression är en allvarlig risk.', 'Opioider'), ('f4', 'farmakologi', 'Medel', 'Vilket påstående om paracetamol är mest korrekt?', ['Det är ett antibiotikum', 'Det används bland annat som smärtstillande och febernedsättande', 'Det är alltid helt ofarligt oavsett dos', 'Det är ett antikoagulantium'], 1, 'Paracetamol används för smärta och feber. För hög total dos kan ge allvarlig leverskada.', 'Analgetika'), ('f5', 'farmakologi', 'Medel', 'Vilken parameter är särskilt viktig att följa vid behandling med insulin?', ['Blodglukos', 'Hörsel', 'Synfält', 'Hudtemperatur'], 0, 'Insulin sänker blodglukos och kan orsaka hypoglykemi, vilket gör glukoskontroll central.', 'Diabetes'), ('f6', 'farmakologi', 'Avancerad', 'Vilken situation ökar risken för läkemedelsrelaterade fel?', ['Likartade läkemedelsnamn och hög arbetsbelastning', 'Tydlig ordination', 'En patient åt gången', 'Dubbelkontroll'], 0, 'Hög arbetsbelastning och förväxlingsbara namn/förpackningar är exempel på riskfaktorer. Standardiserade kontroller minskar risken.', 'Patientsäkerhet'), ('f7', 'farmakologi', 'Grund', 'Vilken läkemedelsgrupp används för att minska magsyrasekretion?', ['Protonpumpshämmare', 'Betablockerare', 'DOAK', 'Loopdiuretika'], 0, 'Protonpumpshämmare, exempelvis omeprazol, hämmar protonpumpen och minskar syrasekretionen.', 'GI'), ('o1', 'omvardnad', 'Grund', 'Vad är huvudsyftet med personcentrerad vård?', ['Samma vård för alla', 'Utgå från patientens behov, resurser och önskemål', 'Enbart följa medicinska ordinationer', 'Minska all dokumentation'], 1, 'Personcentrerad vård innebär att patienten ses som en person och partner i vården, med egna behov, resurser och mål.', 'Personcentrering'), ('o2', 'omvardnad', 'Medel', 'Vilken del av omvårdnadsprocessen innebär att formulera mål och välja åtgärder?', ['Datainsamling', 'Planering', 'Utvärdering', 'Observation'], 1, 'Efter bedömning och identifierade behov planeras mål och omvårdnadsåtgärder.', 'Omvårdnadsprocess'), ('o3', 'omvardnad', 'Grund', 'Vad är ett centralt syfte med strukturerad omvårdnadsdokumentation?', ['Att ersätta muntlig kommunikation helt', 'Att skapa kontinuitet och spårbarhet i vården', 'Att undvika patientdelaktighet', 'Att endast dokumentera avvikelser'], 1, 'Dokumentation ska bidra till säker, kontinuerlig och spårbar vård samt ge relevant information till vårdteamet.', 'Dokumentation'), ('o4', 'omvardnad', 'Medel', 'Vilken åtgärd är mest direkt inriktad på att förebygga trycksår hos en riskpatient?', ['Regelbunden lägesändring och tryckavlastning', 'Öka koffeinintaget', 'Undvika all mobilisering', 'Minska vätskeintaget utan ordination'], 0, 'Tryckavlastning, lägesändring, mobilisering, hudbedömning och nutritionsåtgärder kan ingå i prevention beroende på riskbild.', 'Trycksår'), ('o5', 'omvardnad', 'Grund', 'Vad innebär autonomi i omvårdnad?', ['Att vårdpersonal alltid bestämmer', 'Att respektera patientens rätt att vara delaktig och fatta informerade beslut', 'Att patienten aldrig får råd', 'Att dokumentation är frivillig'], 1, 'Autonomi handlar om respekt för patientens självbestämmande och delaktighet.', 'Etik'), ('o6', 'omvardnad', 'Avancerad', 'En patient har hög smärta trots ordinerad behandling. Vad är mest lämpligt som nästa steg?', ['Ignorera smärtan', 'Göra en strukturerad smärtbedömning och vid behov kontakta ansvarig för ny bedömning', 'Ge dubbel dos utan ordination', 'Vänta till nästa dag'], 1, 'Smärtan behöver bedömas strukturerat och effekten av behandling utvärderas. Vid otillräcklig effekt behöver vårdplanen omprövas.', 'Smärta'), ('o7', 'omvardnad', 'Medel', 'Vad är en viktig del av säker utskrivningsplanering?', ['Enbart boka transport', 'Säkerställa förståelse, läkemedel, uppföljning och relevanta kontaktvägar', 'Undvika information för att minska oro', 'Alltid skriva ut samma dag'], 1, 'Utskrivningsplanering ska anpassas efter patientens behov och bidra till kontinuitet och säker övergång.', 'Utskrivning'), ('m1', 'mikrobiologi', 'Grund', 'Vad innebär handdesinfektion främst?', ['Steriliserar huden', 'Minskar mängden mikroorganismer på händerna', 'Tar bort all normalflora permanent', 'Ersätter all handtvätt'], 1, 'Handdesinfektion minskar mängden mikroorganismer och är central för att förebygga smittspridning.', 'Basala hygienrutiner'), ('m2', 'mikrobiologi', 'Medel', 'Vad betyder ESBL i kliniskt sammanhang?', ['Ett virus', 'En resistensmekanism hos bakterier mot flera betalaktamantibiotika', 'En svamp', 'Ett vaccin'], 1, 'ESBL är enzymer som kan bryta ned flera betalaktamantibiotika och därmed ge resistens.', 'Resistens'), ('m3', 'mikrobiologi', 'Grund', 'Vad menas med inkubationstid?', ['Tiden från smitta till symtomdebut', 'Tiden för antibiotikabehandling', 'Tiden från symtom till utskrivning', 'Tiden för handtvätt'], 0, 'Inkubationstid är tiden mellan smittotillfället och när symtom börjar utvecklas.', 'Smitta'), ('m4', 'mikrobiologi', 'Medel', 'Vilket påstående om antibiotikaresistens är mest korrekt?', ['Resistens betyder att patienten är immun', 'Bakterier kan utveckla eller förvärva egenskaper som gör antibiotika mindre effektiva', 'Alla antibiotika fungerar mot alla bakterier', 'Resistens påverkar bara virus'], 1, 'Resistens innebär att bakterier har egenskaper som gör att vissa antibiotika inte längre fungerar effektivt.', 'Antibiotika'), ('m5', 'mikrobiologi', 'Grund', 'Vad är en vårdrelaterad infektion?', ['En infektion som alltid finns före inläggning', 'En infektion som uppkommer i samband med vård eller behandling', 'Enbart en luftburen infektion', 'En infektion som bara drabbar personal'], 1, 'Vårdrelaterade infektioner kan uppstå i samband med vård, undersökning eller behandling.', 'VRI'), ('m6', 'mikrobiologi', 'Avancerad', 'Varför är korrekt handhygien viktig även när handskar används?', ['Handskar ersätter aldrig handhygien', 'Handskar kan ha mikroskopiska skador och händer kan kontamineras vid byte', 'Handskar steriliserar händerna', 'Handskar gör all smitta omöjlig'], 1, 'Handskar är ett komplement. Händer kan kontamineras vid på- och avtagning och handskar kan inte ersätta basala hygienrutiner.', 'Basala hygienrutiner'), ('m7', 'mikrobiologi', 'Medel', 'Vad är en normalflora?', ['Mikroorganismer som normalt finns på eller i kroppen utan att orsaka sjukdom', 'Endast sjukdomsframkallande bakterier', 'Alla virus i blodet', 'En antibiotikagrupp'], 0, 'Normalflora är mikroorganismer som normalt förekommer på eller i kroppen och ofta samexisterar utan sjukdom.', 'Normalflora'), ('ak1', 'akut', 'Grund', 'Vilken bokstav i ABCDE står för Airway?', ['A', 'B', 'C', 'D'], 0, 'A står för Airway, alltså bedömning av luftväg. ABCDE används för systematisk prioritering.', 'ABCDE'), ('ak2', 'akut', 'Medel', 'Vad är grundprincipen vid en akut försämring enligt ABCDE?', ['Dokumentera först', 'Åtgärda livshotande problem när de identifieras', 'Vänta på rond', 'Ta full anamnes innan första åtgärd'], 1, 'ABCDE bygger på systematisk bedömning och omedelbar åtgärd av livshotande problem.', 'ABCDE'), ('ak3', 'akut', 'Grund', 'Vilket fynd kan tala för påverkat andningsarbete?', ['Ökad andningsfrekvens och användning av accessoriska muskler', 'Normal samtalston utan ansträngning', 'Varm hand', 'Normal aptit'], 0, 'Ökad andningsfrekvens, cyanos, indragningar och accessorisk muskelaktivitet kan vara tecken på andningspåverkan.', 'Andning'), ('ak4', 'akut', 'Medel', 'En patient blir plötsligt kallsvettig, blek och yr. Vad är en rimlig första strategi?', ['Bedöm systematiskt enligt ABCDE och kontrollera vitalparametrar', 'Ge mat och gå därifrån', 'Vänta tills nästa rond', 'Dokumentera utan bedömning'], 0, 'Plötslig försämring kräver snabb strukturerad bedömning och vitalparametrar samt åtgärder utifrån fynd.', 'Cirkulation'), ('ak5', 'akut', 'Medel', 'Vad är NEWS2 främst till för?', ['Att diagnostisera alla sjukdomar', 'Att identifiera och följa risk för klinisk försämring med hjälp av vitalparametrar', 'Att ersätta klinisk bedömning', 'Att beräkna läkemedelsdos'], 1, 'NEWS2 är ett observationssystem för att identifiera försämring och stödja eskalering. Det ersätter inte kliniskt omdöme.', 'NEWS2'), ('ak6', 'akut', 'Avancerad', 'Vilken prioritering är mest rimlig om en patient har en ofri luftväg?', ['Luftvägen måste prioriteras omedelbart', 'Börja med kostregistrering', 'Ta fullständig social anamnes först', 'Mät vikt innan åtgärd'], 0, 'En ofri luftväg är direkt livshotande och prioriteras enligt ABCDE.', 'Prioritering'), ('ak7', 'akut', 'Grund', 'Vad står C i ABCDE för?', ['Consciousness', 'Circulation', 'Capillary', 'Communication'], 1, 'C står för Circulation, där bland annat puls, blodtryck, hud och tecken på cirkulationssvikt bedöms.', 'ABCDE'), ('md1', 'medicin', 'Grund', 'Vilket prov används ofta som biomarkör vid misstänkt hjärtinfarkt?', ['Troponin', 'CRP', 'Ferritin', 'TSH'], 0, 'Troponin är en viktig biomarkör för myokardskada och tolkas tillsammans med symtom, EKG och övrig klinik.', 'Hjärtinfarkt'), ('md2', 'medicin', 'Medel', 'Vilket symtom är vanligt vid hjärtsvikt?', ['Dyspné', 'Ökad synskärpa', 'Minskad trötthet', 'Hyperaktivitet'], 0, 'Dyspné, trötthet och ödem är vanliga symtom vid hjärtsvikt.', 'Hjärtsvikt'), ('md3', 'medicin', 'Grund', 'Vad är ett typiskt symtom vid djup ventrombos?', ['Ensidig svullnad och smärta i benet', 'Plötsligt förbättrad kondition', 'Bilateral hörselförlust', 'Ökad aptit'], 0, 'DVT kan ge ensidig svullnad, smärta, ömhet och ibland värmeökning. Klinisk bedömning behövs.', 'DVT'), ('md4', 'medicin', 'Medel', 'Vilket symtom är typiskt vid hypoglykemi?', ['Svettning, tremor och förvirring', 'Torr hud och långsam puls i alla fall', 'Ökad muskelstyrka', 'Enbart feber'], 0, 'Hypoglykemi kan ge autonoma symtom som svettning och tremor samt neuroglycopeniska symtom som förvirring.', 'Diabetes'), ('md5', 'medicin', 'Medel', 'Vilket påstående om KOL är mest korrekt?', ['KOL är en kronisk lungsjukdom med kvarstående luftflödesbegränsning', 'KOL är alltid akut och övergående', 'KOL drabbar endast barn', 'KOL påverkar aldrig andningen'], 0, 'KOL innebär kronisk luftvägs- och lungpåverkan med kvarstående luftflödesbegränsning och kan ge dyspné och hosta.', 'KOL'), ('md6', 'medicin', 'Avancerad', 'Vilket fynd kan vara förenligt med dehydrering?', ['Törst, torra slemhinnor och minskad urinmängd', 'Ökad urinmängd i alla fall', 'Ökad hudturgor', 'Alltid hypertoni'], 0, 'Dehydrering kan ge törst, torra slemhinnor, minskad urinmängd och cirkulatoriska förändringar.', 'Vätskebalans'), ('md7', 'medicin', 'Grund', 'Vilken diagnos innebär inflammation i appendix?', ['Appendicit', 'Divertikulit', 'Pankreatit', 'Peritonit'], 0, 'Appendicit är inflammation i appendix och kan ge buksmärta, illamående och feber.', 'Kirurgi'), ('lb1', 'lakemedelsberakning', 'Grund', 'Ordinationen är 500 mg och tabletterna innehåller 250 mg. Hur många tabletter ges?', ['0,5', '1', '2', '4'], 2, 'Antal tabletter = ordinerad dos / styrka = 500 mg / 250 mg = 2 tabletter.', 'Tablett'), ('lb2', 'lakemedelsberakning', 'Grund', 'En infusion på 1000 mL ska gå på 8 timmar. Vilken hastighet blir det i mL/h?', ['80', '100', '125', '160'], 2, '1000 mL / 8 h = 125 mL/h.', 'Infusion'), ('lb3', 'lakemedelsberakning', 'Medel', 'En patient ska ha 750 mg. Lösningen innehåller 250 mg/mL. Hur många mL ges?', ['1 mL', '2 mL', '3 mL', '4 mL'], 2, 'Volym = ordinerad dos / koncentration = 750 mg / 250 mg/mL = 3 mL.', 'Dos'), ('lb4', 'lakemedelsberakning', 'Medel', '0,5 g motsvarar hur många mg?', ['5 mg', '50 mg', '500 mg', '5000 mg'], 2, '1 g = 1000 mg. Därför är 0,5 g = 500 mg.', 'Enheter'), ('lb5', 'lakemedelsberakning', 'Medel', 'En infusion på 500 mL ska ges på 4 timmar. Vilken hastighet i mL/h?', ['100', '125', '150', '200'], 1, '500 mL / 4 h = 125 mL/h.', 'Infusion'), ('lb6', 'lakemedelsberakning', 'Avancerad', 'En ordination är 2 mg/kg. Patienten väger 70 kg. Hur stor dos blir det?', ['14 mg', '70 mg', '140 mg', '280 mg'], 2, '2 mg/kg × 70 kg = 140 mg.', 'Viktbaserad dos'), ('lb7', 'lakemedelsberakning', 'Grund', 'Vilken enhet används normalt för volymen av en injektionslösning?', ['mL', 'kg', 'mmHg', 'mmol/h'], 0, 'mL (milliliter) används som volymenhet för injektions- och infusionslösningar.', 'Enheter'), ('v1', 'vfu', 'Grund', 'Vad används SBAR främst till?', ['Läkemedelsberäkning', 'Strukturerad kommunikation', 'Sterilisering', 'Provtagning'], 1, 'SBAR står för Situation, Bakgrund, Aktuellt tillstånd och Rekommendation och strukturerar rapportering.', 'SBAR'), ('v2', 'vfu', 'Medel', 'Vad är viktigt före administrering av ett läkemedel?', ['Kontrollera ordination och patientidentitet', 'Hoppa över signering', 'Ge utan att kontrollera relevanta risker', 'Dokumentera innan läkemedlet ges'], 0, 'Säker läkemedelshantering kräver kontroller av ordination, patient, läkemedel, dos, tid och administreringssätt enligt lokala rutiner.', 'Läkemedel'), ('v3', 'vfu', 'Grund', 'Vad är en central princip vid mätning av vitalparametrar?', ['Att tolka värden i relation till patientens tillstånd och trend', 'Att endast notera det högsta värdet', 'Att alltid behandla ett avvikande värde utan bedömning', 'Att aldrig jämföra med tidigare värden'], 0, 'Ett enskilt värde behöver sättas i kliniskt sammanhang och jämföras med tidigare värden när det är relevant.', 'Vitalparametrar'), ('v4', 'vfu', 'Medel', 'Vad är en viktig åtgärd före en PVK-relaterad procedur?', ['Handhygien och aseptisk teknik enligt lokal rutin', 'Hoppa över identitetskontroll', 'Använda samma handskar till flera patienter', 'Desinficera aldrig huden'], 0, 'Handhygien, rätt material, identitetskontroll och aseptisk teknik är viktiga delar av säker PVK-hantering.', 'PVK'), ('v5', 'vfu', 'Grund', 'Vad är syftet med NEWS2-bedömning?', ['Identifiera risk för klinisk försämring', 'Beräkna eGFR', 'Bestämma blodgrupp', 'Ställa slutlig diagnos'], 0, 'NEWS2 sammanväger vitalparametrar för att uppmärksamma försämring och stödja klinisk eskalering.', 'NEWS2'), ('v6', 'vfu', 'Avancerad', 'Du märker att en patient plötsligt blivit mer andfådd och påtagligt trött. Vad är mest rimligt?', ['Gör en snabb strukturerad bedömning, kontrollera vitalparametrar och eskalera vid behov', 'Vänta till nästa rond', 'Dokumentera utan att bedöma', 'Ge valfritt läkemedel'], 0, 'Plötslig försämring kräver snabb bedömning, relevanta mätningar och eskalering enligt lokala rutiner.', 'Försämring'), ('v7', 'vfu', 'Medel', 'Vilken kommunikationsstrategi är mest lämplig vid överrapportering?', ['Strukturerad rapport med relevant information och tydlig rekommendation', 'Långa osorterade berättelser', 'Endast diagnosen', 'Endast senaste blodtrycket'], 0, 'Strukturerad kommunikation minskar risken att viktig information missas och gör nästa åtgärd tydligare.', 'Kommunikation')].map(([id,s,d,q,o,a,e,tag])=>({id,s,d,q,o,a,e,tag}));
+const knowledge=[('ABCDE', 'Akut omhändertagande', '🚑', 'A: luftväg. B: andning. C: cirkulation. D: neurologi/medvetande. E: exponering.', 'Använd strukturen för att snabbt identifiera och åtgärda livshotande problem. Följ lokala rutiner och eskalera vid behov.'), ('SBAR', 'Kommunikation', '🗣️', 'Situation → Bakgrund → Aktuellt tillstånd → Rekommendation.', 'Börja med varför du kontaktar mottagaren, ge relevant bakgrund, beskriv nuläget och var tydlig med vad du rekommenderar eller behöver.'), ('NEWS2', 'Observation', '📊', 'Ett system för att uppmärksamma klinisk försämring med hjälp av vitalparametrar.', 'Tolka alltid resultatet tillsammans med patientens kliniska bild och följ verksamhetens lokala eskaleringsrutiner.'), ('Vätskebalans', 'Omvårdnad', '💧', 'Tillförsel minus förluster ger en förenklad bild av vätskebalansen.', 'Bedöm även kliniska tecken, vikttrend, urinmängd och relevanta prover. Vätskestatus är mer än en enskild siffra.'), ('Hjärtsvikt', 'Medicinska sjukdomar', '❤️', 'Nedsatt pumpförmåga kan ge dyspné, trötthet och vätskeretention.', 'Följ bland annat symtom, vitalparametrar, vikt och ödem enligt vårdplan. Akut försämring kräver snabb bedömning.'), ('DVT', 'Medicinska sjukdomar', '🦵', 'Djup ventrombos är en blodpropp i en djup ven, ofta i benet.', 'Ensidig svullnad, smärta och ömhet kan förekomma. Misstanke kräver medicinsk bedömning.'), ('DOAK', 'Farmakologi', '💊', 'Direktverkande orala antikoagulantia används för att förebygga och behandla tromboemboliska tillstånd.', 'Exempel är apixaban och rivaroxaban. Bedöm blödningsrisk och följ ordination och lokala rutiner.'), ('Troponin', 'Kardiologi', '🧪', 'Biomarkör för myokardskada.', 'Troponin måste tolkas tillsammans med symtom, EKG och förändring över tid; ett förhöjt värde är inte ensamt liktydigt med hjärtinfarkt.'), ('ESBL', 'Mikrobiologi', '🦠', 'Enzymer som kan ge resistens mot flera betalaktamantibiotika.', 'Resistensuppgifter påverkar antibiotikaval och vårdhygien. Följ alltid lokala riktlinjer.'), ('Trycksår', 'Omvårdnad', '🛏️', 'Lokal vävnadsskada som kan uppstå vid tryck, skjuv och andra belastningar.', 'Riskbedömning, tryckavlastning, mobilisering, hudbedömning och nutrition kan ingå i prevention.'), ('Läkemedelssäkerhet', 'Patientsäkerhet', '🛡️', 'Systematiska kontroller minskar risken för läkemedelsfel.', 'Kontrollera ordination, identitet, läkemedel, dos, tid och administreringssätt enligt lokala rutiner. Dokumentera efter administrering.'), ('Hypoglykemi', 'Diabetes', '🍬', 'Lågt blodglukos kan ge svettning, tremor, hunger, oro och senare förvirring eller medvetandepåverkan.', 'Bekräfta med glukosmätning när det är möjligt och behandla enligt ordination/lokal rutin. Följ upp effekten.')].map(([title,cat,icon,summary,body])=>({title,cat,icon,summary,body}));
+const vfuItems=[('SBAR', '🗣️', 'Strukturerad rapport', 'Skriv en rapport som är kort men komplett: Situation, Bakgrund, Aktuellt tillstånd och Rekommendation.', 'Tips: avsluta med vad du vill att mottagaren ska göra eller ta ställning till.'), ('ABCDE', '🚑', 'Akut bedömning', 'Bedöm A–E systematiskt och åtgärda livshotande problem direkt när de upptäcks.', 'Öva på att säga högt vad du bedömer och varför.'), ('NEWS2', '📊', 'Upptäcka försämring', 'Samla vitalparametrar och följ trenden över tid.', 'Kom ihåg att NEWS2 stödjer men inte ersätter klinisk bedömning.'), ('PVK', '💉', 'Perifer venkateter', 'Förbered material, identitetskontroll, handhygien och aseptisk teknik enligt lokal rutin.', 'Kontrollera insticksställe och funktion och dokumentera enligt verksamhetens rutiner.'), ('Läkemedel', '💊', 'Säker administrering', 'Kontrollera ordination, patient, läkemedel, dos, tid och administreringssätt.', 'Var extra uppmärksam på allergier, interaktioner och riskläkemedel.'), ('KAD', '🧴', 'Urinkateter', 'KAD ska ha tydlig indikation och hanteras med aseptisk teknik enligt lokal rutin.', 'Observera urin, flöde, obehag och tecken på komplikationer.'), ('Dokumentation', '📝', 'Kontinuitet och spårbarhet', 'Dokumentera relevant bedömning, åtgärd, effekt och plan.', 'Skriv sakligt, tydligt och i rätt del av journalen.')].map(([title,icon,subtitle,body,tip])=>({title,icon,subtitle,body,tip}));
 
-const questions=[
-{id:"a1",s:"anatomi",d:"Grund",q:"Vilket organ ansvarar främst för gasutbytet mellan luft och blod?",o:["Hjärtat","Lungorna","Levern","Njurarna"],a:1,e:"I alveolerna i lungorna sker diffusion av syre till blodet och koldioxid från blodet."},
-{id:"a2",s:"anatomi",d:"Medel",q:"Vad är hjärtats normala pacemaker?",o:["AV-noden","His-bunten","Sinusknutan","Purkinjefibrerna"],a:2,e:"Sinusknutan initierar normalt hjärtats elektriska impulser och bestämmer grundrytmen."},
-{id:"a3",s:"anatomi",d:"Medel",q:"Vilket hormon ökar återupptaget av vatten i njurarnas samlingsrör?",o:["Insulin","ADH","TSH","Kortisol"],a:1,e:"ADH ökar vattenpermeabiliteten i samlingsrören och bidrar till att koncentrera urinen."},
-{id:"f1",s:"farmakologi",d:"Grund",q:"Vilken effekt har en betablockerare typiskt på hjärtat?",o:["Ökad hjärtfrekvens","Minskad hjärtfrekvens","Ökad blodglukosfrisättning","Ökad salivproduktion"],a:1,e:"Betablockad minskar bland annat hjärtfrekvens och kontraktilitet, beroende på preparat och dos."},
-{id:"f2",s:"farmakologi",d:"Medel",q:"Vilket läkemedel är en antikoagulantia av typen DOAK?",o:["Apixaban","Paracetamol","Omeprazol","Amoxicillin"],a:0,e:"Apixaban är en direkt faktor Xa-hämmare och tillhör gruppen DOAK."},
-{id:"f3",s:"farmakologi",d:"Grund",q:"Vilken vanlig biverkning är särskilt viktig att uppmärksamma vid opioidbehandling?",o:["Förstoppning","Ökad hörsel","Ökad urinproduktion","Hyperaktivitet"],a:0,e:"Opioider kan ge förstoppning, illamående och sedering. Andningsdepression är en allvarlig risk."},
-{id:"o1",s:"omvardnad",d:"Grund",q:"Vad är huvudsyftet med personcentrerad vård?",o:["Att alla patienter får exakt samma vård","Att utgå från patientens behov, resurser och önskemål","Att minska dokumentationen","Att enbart följa medicinska ordinationer"],a:1,e:"Personcentrerad vård innebär att patienten ses som en person och aktiv partner i vården."},
-{id:"o2",s:"omvardnad",d:"Medel",q:"Vilken del av omvårdnadsprocessen innebär att formulera mål och välja åtgärder?",o:["Datainsamling","Planering","Utvärdering","Observation"],a:1,e:"Efter bedömning och identifierade problem planeras mål och omvårdnadsåtgärder."},
-{id:"m1",s:"mikrobiologi",d:"Grund",q:"Vad innebär handdesinfektion främst?",o:["Att sterilisera huden","Att minska mängden mikroorganismer på händerna","Att ta bort all hudflora permanent","Att ersätta handtvätt i alla situationer"],a:1,e:"Handdesinfektion minskar mängden mikroorganismer och är en central åtgärd för att förebygga smittspridning."},
-{id:"m2",s:"mikrobiologi",d:"Medel",q:"Vad betyder ESBL i kliniskt sammanhang?",o:["En typ av virus","En mekanism som kan ge bakterier resistens mot flera betalaktamantibiotika","En svampinfektion","Ett vaccin"],a:1,e:"ESBL är enzymer som bryter ned flera betalaktamantibiotika och kan medföra antibiotikaresistens."},
-{id:"ak1",s:"akut",d:"Grund",q:"Vilken bokstav i ABCDE står för Airway?",o:["A","B","C","D"],a:0,e:"A står för Airway – bedömning av fri luftväg. Därefter följer Breathing, Circulation, Disability och Exposure."},
-{id:"ak2",s:"akut",d:"Medel",q:"Vad bör prioriteras vid en akut försämring enligt ABCDE?",o:["Att dokumentera först","Att behandla livshotande problem när de upptäcks","Att ta en fullständig anamnes innan åtgärd","Att vänta på rond"],a:1,e:"ABCDE bygger på systematisk bedömning och att livshotande problem åtgärdas direkt när de identifieras."},
-{id:"med1",s:"medicin",d:"Grund",q:"Vilket prov används ofta som biomarkör vid misstänkt hjärtinfarkt?",o:["Troponin","CRP","Ferritin","TSH"],a:0,e:"Troponin är en viktig biomarkör för myokardskada och används tillsammans med klinik och EKG."},
-{id:"med2",s:"medicin",d:"Medel",q:"Vilket symtom är typiskt vid hjärtsvikt?",o:["Dyspné","Ökad synskärpa","Hyperaktivitet","Minskad trötthet"],a:0,e:"Dyspné, trötthet och perifera ödem är vanliga symtom vid hjärtsvikt."},
-{id:"lb1",s:"lakemedelsberakning",d:"Grund",q:"Ordinationen är 500 mg och tabletterna innehåller 250 mg. Hur många tabletter ges?",o:["0,5","1","2","4"],a:2,e:"Antal tabletter = ordinerad dos / styrka = 500 / 250 = 2 tabletter."},
-{id:"lb2",s:"lakemedelsberakning",d:"Medel",q:"En infusion på 1000 mL ska gå på 8 timmar. Vilken ungefärlig infusionshastighet blir det i mL/h?",o:["80","100","125","160"],a:2,e:"1000 mL / 8 h = 125 mL/h."},
-{id:"v1",s:"vfu",d:"Grund",q:"Vad används SBAR främst till?",o:["Läkemedelsberäkning","Strukturerad kommunikation","Sterilisering","Provtagning"],a:1,e:"SBAR strukturerar kommunikationen genom Situation, Bakgrund, Aktuellt tillstånd och Rekommendation."},
-{id:"v2",s:"vfu",d:"Medel",q:"Vad är viktigt före administrering av ett läkemedel?",o:["Kontrollera ordination och patientidentitet","Hoppa över signering","Ge läkemedlet utan att kontrollera allergier","Dokumentera innan läkemedlet ges"],a:0,e:"Säker läkemedelshantering kräver bland annat kontroll av ordination, identitet, läkemedel, dos, tid och relevanta risker."}
-];
+const KEY="sjukskoterskeplugget_v5";
+let state=loadState();
+let quizState=null, flashList=[], flashIndex=0, timerId=null, timeLeft=60;
 
-const vfuItems=[
-["SBAR","🗣️","Strukturerad rapport","Situation → Bakgrund → Aktuellt → Rekommendation."],
-["ABCDE","🚑","Akut bedömning","A luftväg, B andning, C cirkulation, D medvetande/neurologi, E exponering."],
-["PVK","💉","Perifer venkateter","Kontrollera indikation, identitet, hygien, insticksställe och funktion enligt lokala rutiner."],
-["NEWS2","📊","Vitalparametrar","Systematisk bedömning av bland annat andning, saturation, blodtryck, puls, medvetande och temperatur."],
-["KAD","🧴","Urinkateter","Aseptisk teknik och tydlig indikation är centralt. Följ lokala riktlinjer."],
-["Läkemedel","💊","Säker administrering","Kontrollera ordination, patient, läkemedel, dos, tid, administreringssätt och dokumentation."]
-];
+function loadState(){
+  try{return Object.assign({answered:0,correct:0,bySubject:{},flash:{},history:[],streak:0,lastStudy:null},JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return {answered:0,correct:0,bySubject:{},flash:{},history:[],streak:0,lastStudy:null}}
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function todayKey(){return new Date().toISOString().slice(0,10);}
+function subjectName(id){return subjects.find(x=>x.id===id)?.name||id;}
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove("show"),2200);}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
 
-let state=JSON.parse(localStorage.getItem("sjukskoterskeplugget"))||{answered:0,correct:0,bySubject:{},streak:0};
-let quizState=null, flashList=[], flashIndex=0;
+function nav(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="progress")renderProgress();
+  if(id==="home")renderHome();
+}
 
-function save(){localStorage.setItem("sjukskoterskeplugget",JSON.stringify(state))}
-function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1800)}
-function subjectName(id){return subjects.find(x=>x.id===id)?.name||id}
-function nav(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===id));window.scrollTo({top:0,behavior:"smooth"});if(id==="progress")renderProgress();if(id==="quiz")resetQuizSetup()}
 function setupSubjects(){
- const grid=document.getElementById("subjectGrid");
- grid.innerHTML=subjects.map(s=>`<button class="subject" data-subject="${s.id}"><b>${s.icon}</b><strong>${s.name}</strong><small>${s.desc}</small></button>`).join("");
- ["quizSubject","flashSubject"].forEach(id=>{
-  const el=document.getElementById(id);el.innerHTML='<option value="Alla">Alla ämnen</option>'+subjects.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
- });
- grid.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{nav("quiz");document.getElementById("quizSubject").value=b.dataset.subject});
+  const grid=document.getElementById("subjectGrid");
+  grid.innerHTML=subjects.map(s=>`<button class="subject" data-subject="${s.id}"><b>${s.icon}</b><strong>${s.name}</strong><small>${s.desc}</small><span class="subject-count">${questions.filter(q=>q.s===s.id).length} frågor</span></button>`).join("");
+  document.getElementById("quizSubject").innerHTML='<option value="Alla">Alla ämnen</option>'+subjects.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+  document.getElementById("flashSubject").innerHTML='<option value="Alla">Alla ämnen</option>'+subjects.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
-function resetQuizSetup(){document.getElementById("quizSetup").classList.remove("hidden");document.getElementById("quizArea").classList.add("hidden")}
-function startQuiz(){
- const s=document.getElementById("quizSubject").value,d=document.getElementById("quizDifficulty").value,n=+document.getElementById("quizCount").value;
- let pool=questions.filter(q=>(s==="Alla"||q.s===s)&&(d==="Alla"||q.d===d));
- pool.sort(()=>Math.random()-.5);pool=pool.slice(0,n);
- if(!pool.length){toast("Inga frågor matchar valet.");return}
- quizState={pool,index:0,score:0,answered:false};
- document.getElementById("quizSetup").classList.add("hidden");document.getElementById("quizArea").classList.remove("hidden");renderQuestion();
+
+function renderHome(){
+  const acc=state.answered?Math.round(state.correct/state.answered*100):0;
+  document.getElementById("homeAccuracy").textContent=acc+"%";
+  document.getElementById("homeAnswered").textContent=state.answered+" besvarade";
+  let tip="Redo för nästa pass?";
+  if(acc>=85)tip="Starkt resultat – utmana dig själv.";
+  else if(state.answered>=10)tip="Repetera dina svagaste områden.";
+  document.getElementById("homeTip").textContent=tip;
+  const weak=getWeakSubject();
+  if(weak){
+    document.getElementById("recommendTitle").textContent="Träna "+subjectName(weak);
+    document.getElementById("recommendText").textContent="Det är just nu ditt område med lägst träffsäkerhet. Ett kort quiz är ett bra nästa steg.";
+  }
 }
+
+function getWeakSubject(){
+  const rows=subjects.map(s=>{
+    const x=state.bySubject[s.id]||{a:0,c:0};
+    return {id:s.id,a:x.a,c:x.c,p:x.a?x.c/x.a:1};
+  }).filter(x=>x.a>=2);
+  rows.sort((a,b)=>a.p-b.p||b.a-a.a);
+  return rows[0]?.id||null;
+}
+
+function startQuiz(custom={}){
+  clearInterval(timerId);
+  const s=custom.subject||document.getElementById("quizSubject").value;
+  const d=custom.difficulty||document.getElementById("quizDifficulty").value;
+  const n=custom.count||+document.getElementById("quizCount").value;
+  const mode=custom.mode||document.getElementById("quizMode").value;
+  const timer=custom.timer??document.getElementById("quizTimer").checked;
+  let pool=questions.filter(q=>(s==="Alla"||q.s===s)&&(d==="Alla"||q.d===d));
+  pool=shuffle(pool).slice(0,n);
+  if(!pool.length){toast("Inga frågor matchar valet.");return;}
+  quizState={pool,index:0,score:0,answered:false,mode,timer,started:Date.now()};
+  document.getElementById("quizSetup").classList.add("hidden");
+  document.getElementById("quizArea").classList.remove("hidden");
+  renderQuestion();
+}
+
 function renderQuestion(){
- const q=quizState.pool[quizState.index],pct=Math.round((quizState.index/quizState.pool.length)*100);
- document.getElementById("quizArea").innerHTML=`<div class="quiz-top"><span>Fråga ${quizState.index+1} av ${quizState.pool.length}</span><strong>${quizState.score} rätt</strong></div><div class="progressbar"><div style="width:${pct}%"></div></div><div class="question-card"><span class="eyebrow">${subjectName(q.s)} • ${q.d}</span><h3>${q.q}</h3><div class="options">${q.o.map((x,i)=>`<button class="option" data-i="${i}">${String.fromCharCode(65+i)}. ${x}</button>`).join("")}</div><div id="explanation"></div><div class="quiz-bottom"><span id="feedback"></span><button id="nextQ" class="primary hidden">${quizState.index===quizState.pool.length-1?"Visa resultat":"Nästa fråga"} →</button></div></div>`;
- document.querySelectorAll(".option").forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+  clearInterval(timerId);
+  const q=quizState.pool[quizState.index];
+  const pct=Math.round((quizState.index/quizState.pool.length)*100);
+  document.getElementById("quizArea").innerHTML=`
+  <div class="quiz-top"><span>Fråga ${quizState.index+1} av ${quizState.pool.length}</span><strong>${quizState.score} rätt</strong>${quizState.timer?`<span class="timer" id="timer">60 s</span>`:""}</div>
+  <div class="progressbar"><div style="width:${pct}%"></div></div>
+  <div class="question-card">
+    <div class="question-meta"><span class="eyebrow">${subjectName(q.s)}</span><span class="badge">${q.d}</span><span class="badge">${q.tag}</span></div>
+    <h3>${q.q}</h3>
+    <div class="options">${q.o.map((x,i)=>`<button class="option" data-i="${i}"><span>${String.fromCharCode(65+i)}</span>${x}</button>`).join("")}</div>
+    <div id="explanation"></div>
+    <div class="quiz-bottom"><span id="feedback"></span><button id="nextQ" class="primary hidden">${quizState.index===quizState.pool.length-1?"Visa resultat":"Nästa fråga"} →</button></div>
+  </div>`;
+  document.querySelectorAll(".option").forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+  if(quizState.timer)startTimer();
 }
-function answer(i){
- if(quizState.answered)return;quizState.answered=true;
- const q=quizState.pool[quizState.index],correct=i===q.a;
- if(correct)quizState.score++;
- state.answered++;state.correct+=correct?1:0;state.bySubject[q.s]??={a:0,c:0};state.bySubject[q.s].a++;if(correct)state.bySubject[q.s].c++;save();
- document.querySelectorAll(".option").forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add("correct");if(j===i&&!correct)b.classList.add("wrong")});
- document.getElementById("feedback").textContent=correct?"✓ Rätt!":"✕ Inte riktigt.";
- document.getElementById("explanation").innerHTML=`<div class="explanation"><strong>Förklaring:</strong> ${q.e}</div>`;
- document.getElementById("nextQ").classList.remove("hidden");document.getElementById("nextQ").onclick=nextQuestion;
+
+function startTimer(){
+  timeLeft=60;
+  const el=document.getElementById("timer");
+  timerId=setInterval(()=>{
+    timeLeft--; if(el)el.textContent=timeLeft+" s";
+    if(timeLeft<=10&&el)el.classList.add("urgent");
+    if(timeLeft<=0){clearInterval(timerId);answer(-1,true);}
+  },1000);
 }
-function nextQuestion(){if(quizState.index<quizState.pool.length-1){quizState.index++;quizState.answered=false;renderQuestion()}else showResult()}
-function showResult(){const pct=Math.round(quizState.score/quizState.pool.length*100);document.getElementById("quizArea").innerHTML=`<div class="panel result"><p class="eyebrow">QUIZ KLART</p><h2>Bra jobbat!</h2><div class="score">${pct}%</div><p>${quizState.score} av ${quizState.pool.length} rätt.</p><button class="primary" onclick="startQuiz()">Gör om quiz</button> <button class="secondary" onclick="nav('progress')">Se framsteg</button></div>`}
-function loadFlash(){const s=document.getElementById("flashSubject").value;flashList=questions.filter(q=>s==="Alla"||q.s===s).map(q=>({f:q.q,b:q.e}));flashList.sort(()=>Math.random()-.5);flashIndex=0;renderFlash()}
-function renderFlash(){if(!flashList.length)return;const q=flashList[flashIndex];const card=document.getElementById("flashcard");card.classList.remove("flipped");document.getElementById("flashFront").textContent=q.f;document.getElementById("flashBack").textContent=q.b;document.getElementById("flashCounter").textContent=`${flashIndex+1} / ${flashList.length}`}
-function vfu(){
- document.getElementById("vfuGrid").innerHTML=vfuItems.map((x,i)=>`<button class="vfu-card" data-i="${i}"><b>${x[1]}</b><h3>${x[0]}</h3><p>${x[2]}</p></button>`).join("");
- document.querySelectorAll(".vfu-card").forEach(b=>b.onclick=()=>{const x=vfuItems[+b.dataset.i];const d=document.getElementById("vfuDetail");d.classList.remove("hidden");d.innerHTML=`<p class="eyebrow">${x[0]}</p><h3>${x[2]}</h3><p>${x[3]}</p><button class="secondary" onclick="document.getElementById('vfuDetail').classList.add('hidden')">Stäng</button>`;d.scrollIntoView({behavior:"smooth",block:"center"})});
+
+function answer(i,timeout=false){
+  if(quizState.answered)return;
+  clearInterval(timerId);quizState.answered=true;
+  const q=quizState.pool[quizState.index],correct=i===q.a;
+  if(correct)quizState.score++;
+  state.answered++;state.correct+=correct?1:0;
+  state.bySubject[q.s]??={a:0,c:0};state.bySubject[q.s].a++;if(correct)state.bySubject[q.s].c++;
+  state.lastStudy=todayKey();save();
+  document.querySelectorAll(".option").forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add("correct");if(j===i&&!correct)b.classList.add("wrong");});
+  document.getElementById("feedback").textContent=timeout?"⏱ Tiden tog slut.":(correct?"✓ Rätt!":"✕ Inte riktigt.");
+  document.getElementById("explanation").innerHTML=`<div class="explanation"><strong>Förklaring:</strong> ${q.e}</div>`;
+  const next=document.getElementById("nextQ");next.classList.remove("hidden");next.onclick=nextQuestion;
+  updateStreak();
 }
+
+function nextQuestion(){
+  if(quizState.index<quizState.pool.length-1){quizState.index++;quizState.answered=false;renderQuestion();}
+  else showResult();
+}
+
+function showResult(){
+  clearInterval(timerId);
+  const pct=Math.round(quizState.score/quizState.pool.length*100);
+  const msg=pct>=90?"Utmärkt!":pct>=75?"Bra jobbat!":pct>=60?"På rätt väg!":"Bra att du tränar – repetition ger effekt.";
+  state.history.unshift({date:new Date().toLocaleString("sv-SE"),score:quizState.score,total:quizState.pool.length,pct,subject:quizState.pool.every(q=>q.s===quizState.pool[0].s)?subjectName(quizState.pool[0].s):"Blandat"});
+  state.history=state.history.slice(0,8);save();
+  document.getElementById("quizArea").innerHTML=`<div class="panel result"><p class="eyebrow">QUIZ KLART</p><h2>${msg}</h2><div class="score">${pct}%</div><p>${quizState.score} av ${quizState.pool.length} rätt.</p><div class="result-actions"><button class="primary" id="retryQuiz">Gör om</button><button class="secondary" data-nav="progress">Se framsteg</button><button class="secondary" data-action="weak">Träna svaga områden</button></div></div>`;
+  document.getElementById("retryQuiz").onclick=()=>startQuiz();
+}
+
+function updateStreak(){
+  const today=todayKey();
+  if(state.lastStudy===today)return;
+  state.streak=(state.streak||0)+1;state.lastStudy=today;save();
+}
+
+function loadFlash(){
+  const s=document.getElementById("flashSubject").value, filter=document.getElementById("flashFilter").value;
+  flashList=questions.filter(q=>s==="Alla"||q.s===s).filter(q=>{
+    const f=state.flash[q.id]||{seen:0,known:0};
+    if(filter==="new")return f.seen===0;
+    if(filter==="weak")return f.seen>0&&f.known/f.seen<0.7;
+    return true;
+  });
+  flashList=shuffle(flashList);flashIndex=0;renderFlash();
+}
+
+function renderFlash(){
+  const card=document.getElementById("flashcard");
+  card.classList.remove("flipped");
+  if(!flashList.length){document.getElementById("flashFront").textContent="Inga kort matchar filtret.";document.getElementById("flashBack").textContent="Välj ett annat filter.";document.getElementById("flashCounter").textContent="0 / 0";return;}
+  const q=flashList[flashIndex];
+  document.getElementById("flashFront").textContent=q.q;
+  document.getElementById("flashBack").textContent=q.e;
+  document.getElementById("flashCounter").textContent=`${flashIndex+1} / ${flashList.length}`;
+}
+function markFlash(known){
+  if(!flashList.length)return;
+  const q=flashList[flashIndex];state.flash[q.id]??={seen:0,known:0};state.flash[q.id].seen++;if(known)state.flash[q.id].known++;save();
+  flashIndex=(flashIndex+1)%flashList.length;renderFlash();
+}
+
+function renderVFU(){
+  document.getElementById("vfuGrid").innerHTML=vfuItems.map((x,i)=>`<button class="vfu-card" data-i="${i}"><b>${x.icon}</b><h3>${x.title}</h3><p>${x.subtitle}</p></button>`).join("");
+}
+function showVFU(i){
+  const x=vfuItems[i],d=document.getElementById("vfuDetail");d.classList.remove("hidden");
+  d.innerHTML=`<p class="eyebrow">${x.title}</p><h3>${x.subtitle}</h3><p>${x.body}</p><div class="tip"><strong>Kom ihåg:</strong> ${x.tip}</div><button class="secondary" id="closeVfu">Stäng</button>`;
+  document.getElementById("closeVfu").onclick=()=>d.classList.add("hidden");
+  d.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function renderKnowledge(filter=""){
+  const q=filter.toLowerCase();
+  const list=knowledge.filter(x=>(x.title+" "+x.cat+" "+x.summary+" "+x.body).toLowerCase().includes(q));
+  document.getElementById("knowledgeGrid").innerHTML=list.map((x,i)=>`<article class="knowledge-card"><div class="knowledge-icon">${x.icon}</div><span class="badge">${x.cat}</span><h3>${x.title}</h3><p class="summary">${x.summary}</p><details><summary>Läs mer</summary><p>${x.body}</p></details></article>`).join("")||`<div class="panel empty">Inga träffar. Prova ett annat sökord.</div>`;
+}
+
 function renderProgress(){
- const acc=state.answered?Math.round(state.correct/state.answered*100):0;
- document.getElementById("statsGrid").innerHTML=[["Besvarade",state.answered],["Rätt svar",state.correct],["Träffsäkerhet",acc+"%"],["Streak",state.streak]].map(x=>`<div class="stat"><strong>${x[1]}</strong><span>${x[0]}</span></div>`).join("");
- document.getElementById("progressSubjects").innerHTML=subjects.map(s=>{const x=state.bySubject[s.id]||{a:0,c:0};const p=x.a?Math.round(x.c/x.a*100):0;return `<div class="subject-progress"><header><span>${s.icon} ${s.name}</span><strong>${p}%</strong></header><div class="mini-bar"><div style="width:${p}%"></div></div></div>`}).join("");
+  const acc=state.answered?Math.round(state.correct/state.answered*100):0;
+  document.getElementById("statsGrid").innerHTML=[
+    ["Besvarade",state.answered,"Totalt"],
+    ["Rätt svar",state.correct,"Totalt"],
+    ["Träffsäkerhet",acc+"%","Genomsnitt"],
+    ["Streak",state.streak||0,"Studiepass"]
+  ].map(x=>`<div class="stat"><strong>${x[1]}</strong><span>${x[0]}</span><small>${x[2]}</small></div>`).join("");
+  document.getElementById("progressHint").textContent=state.answered?"Fortsätt där du har lägst träffsäkerhet":"Besvara några frågor för att bygga statistik.";
+  document.getElementById("progressSubjects").innerHTML=subjects.map(s=>{
+    const x=state.bySubject[s.id]||{a:0,c:0},p=x.a?Math.round(x.c/x.a*100):0;
+    return `<div class="subject-progress"><header><span>${s.icon} ${s.name}</span><strong>${x.a?p+"%":"—"} </strong></header><div class="mini-bar"><div style="width:${p}%"></div></div><small>${x.a?x.c+" av "+x.a+" rätt":"Inte tränat ännu"}</small></div>`;
+  }).join("");
+  document.getElementById("historyList").innerHTML=state.history.length?state.history.map(h=>`<div class="history-row"><span>${h.date}</span><strong>${h.pct}%</strong><span>${h.score}/${h.total} · ${h.subject}</span></div>`).join(""):`<p class="muted">Dina senaste quiz visas här.</p>`;
 }
+
+function dailyQuiz(){nav("quiz");document.getElementById("quizSubject").value="Alla";document.getElementById("quizDifficulty").value="Alla";document.getElementById("quizCount").value="10";startQuiz({count:10});}
+function recommended(){const weak=getWeakSubject();if(weak){nav("quiz");document.getElementById("quizSubject").value=weak;document.getElementById("quizCount").value="10";startQuiz({subject:weak,count:10})}else dailyQuiz();}
+function weakQuiz(){const weak=getWeakSubject();if(weak){nav("quiz");document.getElementById("quizSubject").value=weak;startQuiz({subject:weak,count:10})}else dailyQuiz();}
+
 document.addEventListener("click",e=>{
-  const b=e.target.closest("[data-nav]");
-  if(!b)return;
-  e.preventDefault();
-  nav(b.dataset.nav);
+  const navBtn=e.target.closest("[data-nav]");if(navBtn){e.preventDefault();nav(navBtn.dataset.nav);return;}
+  const action=e.target.closest("[data-action]");if(action){e.preventDefault();const a=action.dataset.action;if(a==="daily")dailyQuiz();if(a==="recommended")recommended();if(a==="weak")weakQuiz();return;}
+  const sub=e.target.closest(".subject");if(sub){nav("quiz");document.getElementById("quizSubject").value=sub.dataset.subject;return;}
+  const v=e.target.closest(".vfu-card");if(v){showVFU(+v.dataset.i);return;}
 });
-document.getElementById("startQuiz").onclick=startQuiz;
-document.getElementById("flashSubject").onchange=loadFlash;
+
+document.getElementById("startQuiz").onclick=()=>startQuiz();
 document.getElementById("shuffleFlash").onclick=loadFlash;
+document.getElementById("flashSubject").onchange=loadFlash;
+document.getElementById("flashFilter").onchange=loadFlash;
 document.getElementById("flashcard").onclick=()=>document.getElementById("flashcard").classList.toggle("flipped");
-document.getElementById("nextFlash").onclick=()=>{flashIndex=(flashIndex+1)%flashList.length;renderFlash()};
-document.getElementById("prevFlash").onclick=()=>{flashIndex=(flashIndex-1+flashList.length)%flashList.length;renderFlash()};
-document.getElementById("themeBtn").onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("dark",document.body.classList.contains("dark"))};
-document.getElementById("resetProgress").onclick=()=>{if(confirm("Nollställ all quizstatistik?")){state={answered:0,correct:0,bySubject:{},streak:0};save();renderProgress();toast("Framsteg nollställda.")}};
-document.getElementById("search").oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll(".subject,.vfu-card").forEach(x=>x.classList.toggle("search-hit",q && x.textContent.toLowerCase().includes(q)))};
+document.getElementById("flashcard").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();document.getElementById("flashcard").classList.toggle("flipped");}};
+document.getElementById("flashYes").onclick=()=>markFlash(true);
+document.getElementById("flashNo").onclick=()=>markFlash(false);
+document.getElementById("themeBtn").onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("dark",document.body.classList.contains("dark"));};
+document.getElementById("knowledgeSearch").oninput=e=>renderKnowledge(e.target.value);
+document.getElementById("search").oninput=e=>{
+  const q=e.target.value.trim();
+  if(!q)return;
+  nav("knowledge");document.getElementById("knowledgeSearch").value=q;renderKnowledge(q);
+};
+document.getElementById("resetProgress").onclick=()=>{if(confirm("Nollställ all quiz- och flashcardstatistik?")){state={answered:0,correct:0,bySubject:{},flash:{},history:[],streak:0,lastStudy:null};save();renderProgress();renderHome();toast("Framsteg nollställda.");}};
+
+setupSubjects();renderVFU();renderKnowledge();loadFlash();renderProgress();renderHome();
 if(localStorage.getItem("dark")==="true")document.body.classList.add("dark");
-setupSubjects();vfu();loadFlash();renderProgress();nav("home");
+nav("home");
