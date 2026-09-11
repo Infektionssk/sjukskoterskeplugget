@@ -91,7 +91,12 @@ function renderProgress(){
  document.getElementById("statsGrid").innerHTML=[["Besvarade",state.answered],["Rätt svar",state.correct],["Träffsäkerhet",acc+"%"],["Streak",state.streak]].map(x=>`<div class="stat"><strong>${x[1]}</strong><span>${x[0]}</span></div>`).join("");
  document.getElementById("progressSubjects").innerHTML=subjects.map(s=>{const x=state.bySubject[s.id]||{a:0,c:0};const p=x.a?Math.round(x.c/x.a*100):0;return `<div class="subject-progress"><header><span>${s.icon} ${s.name}</span><strong>${p}%</strong></header><div class="mini-bar"><div style="width:${p}%"></div></div></div>`}).join("");
 }
-document.querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();nav(b.dataset.nav)}));
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-nav]");
+  if(!b)return;
+  e.preventDefault();
+  nav(b.dataset.nav);
+});
 document.getElementById("startQuiz").onclick=startQuiz;
 document.getElementById("flashSubject").onchange=loadFlash;
 document.getElementById("shuffleFlash").onclick=loadFlash;
