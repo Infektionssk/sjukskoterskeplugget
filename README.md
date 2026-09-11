@@ -1,20 +1,25 @@
-# Sjuksköterskeplugget – MVP
+# Sjuksköterskeplugget v6
 
-En första fungerande prototyp för en studieplattform för sjuksköterskestudenter.
-
-## Starta
-Öppna `index.html` i en webbläsare.
+En statisk studieplattform för sjuksköterskestudenter.
 
 ## Innehåll
-- Responsiv startsida
-- Ämneskort
-- Interaktivt quiz
-- Praktiska moment
-- VFU-hub
-- Sjukdomsdatabas-prototyp
-- Framsteg
-- Sökfunktion
-- Modalrutor för innehåll
+- Quiz med 56 frågor i 8 ämnesområden
+- Svårighetsgrader och 5/10/15/20 frågor
+- Direkt feedback och tidsbegränsat quiz
+- Dagens quiz och träning av svaga områden
+- Flashcards med enkel repetitionsstatistik
+- VFU-kort för SBAR, ABCDE, NEWS2, PVK, läkemedel, KAD och dokumentation
+- Kunskapsbank med sökning
+- Framsteg per ämne och historik
+- Mörkt läge
+- All statistik sparas lokalt i webbläsaren
 
-## Nästa steg
-Lägg till riktig databas, inloggning, sparade resultat, fler quizfrågor och kvalitetssäkrat studiematerial.
+## Viktigt
+Innehållet är utbildningsmaterial och ersätter inte lokala riktlinjer, ordinationer eller klinisk bedömning.
+
+
+## v6
+- Stabilare responsiv layout för ämneskorten.
+- Förbättrad textbrytning så rubriker inte staplas tecken för tecken.
+- Egen localStorage-nyckel för v6 så tidigare statistik inte skrivs över.
+- Quiz, flashcards, VFU, kunskapsbank och framsteg behålls.
